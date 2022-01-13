@@ -5,5 +5,5 @@
  * @returns {number}
  */
 export default function sum(m, n) {
-
+  return Array.from(arguments).reduce((result, arg) => (result + arg), 0);
 }
