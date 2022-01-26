@@ -78,7 +78,6 @@ export default class ColumnChart {
   }
 
   _getDataItemTemplate(value, tooltip) {
-    console.log(value, tooltip);
     return `<div style="--value: ${value}" data-tooltip="${tooltip}"></div>`;
   }
 
