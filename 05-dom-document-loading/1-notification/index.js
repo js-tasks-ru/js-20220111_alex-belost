@@ -4,7 +4,9 @@ const DEFAULT_CONFIG = {
 };
 
 export default class NotificationMessage {
-  timeoutIndex = null;
+  static element = null;
+  static timeoutIndex = null;
+
   element = null;
 
   constructor(message = '', { type, duration } = DEFAULT_CONFIG) {
@@ -16,26 +18,34 @@ export default class NotificationMessage {
   }
 
   show(target) {
-    const targetElement = target || document.body;
-    const existNotificationElement = document.querySelector('.notification');
-
-    if (existNotificationElement) {
-      existNotificationElement.remove();
-
-      clearTimeout(this.timeoutIndex);
-      this.timeoutIndex = null;
-    }
-
-    targetElement.append(this.element);
-
-    this.timeoutIndex = setTimeout(() => {
-      this.remove();
-      this.timeoutIndex = null;
-    }, this.duration);
+    this.removeElementHandler();
+    this.appendElementHandler(target);
   }
 
   remove() {
-    this.element.remove();
+    NotificationMessage.element.remove();
+    NotificationMessage.element = null;
+  }
+
+  removeElementHandler() {
+    if (!NotificationMessage.element) {
+      return;
+    }
+
+    this.remove();
+
+    clearTimeout(NotificationMessage.timeoutIndex);
+    NotificationMessage.timeoutIndex = null;
+  }
+
+  appendElementHandler(target = document.body) {
+    NotificationMessage.element = this.element;
+    target.append(NotificationMessage.element);
+
+    NotificationMessage.timeoutIndex = setTimeout(() => {
+      this.remove();
+      NotificationMessage.timeoutIndex = null;
+    }, this.duration);
   }
 
   destroy() {
