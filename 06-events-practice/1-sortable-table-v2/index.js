@@ -7,10 +7,10 @@ export default class SortableTable {
   sortDirection = true;
 
   orderMap = new Map([
-    [ 'asc', 1 ],
-    [ 'desc', -1 ],
-    [ true, 'asc' ],
-    [ false, 'desc' ],
+    ['asc', 1],
+    ['desc', -1],
+    [true, 'asc'],
+    [false, 'desc'],
   ]);
 
   constructor(headersConfig, {
@@ -38,7 +38,7 @@ export default class SortableTable {
       return;
     }
 
-    this.subElements.header.removeEventListener('click', this.onSort.bind(this));
+    this.subElements.header.removeEventListener('click', this.onSort);
 
     this.element.remove();
     this.element = null;
@@ -48,10 +48,10 @@ export default class SortableTable {
     this.headerElements = {};
   }
 
-  onSort(event) {
+  onSort = (event) => {
     const sortableElement = event.target.closest('[data-id]');
     const id = sortableElement.dataset.id;
-    const { config: { sortable } } = this.headerElementsMap[ id ];
+    const { config: { sortable } } = this.headerElementsMap[id];
 
     if (!sortable) {
       return;
@@ -66,26 +66,26 @@ export default class SortableTable {
   }
 
   initListeners() {
-    this.subElements.header.addEventListener('pointerdown', this.onSort.bind(this));
+    this.subElements.header.addEventListener('pointerdown', this.onSort);
   }
 
   getStringSortFn() {
     const { id, order } = this.sorted;
 
     return (a, b) => {
-      return this.orderMap.get(order) * a[ id ].localeCompare(b[ id ], [ 'ru', 'en' ], { caseFirst: 'upper' });
+      return this.orderMap.get(order) * a[id].localeCompare(b[id], ['ru', 'en'], { caseFirst: 'upper' });
     };
   }
 
   getNumberSortFn() {
     const { id, order } = this.sorted;
 
-    return (a, b) => this.orderMap.get(order) * (a[ id ] - b[ id ]);
+    return (a, b) => this.orderMap.get(order) * (a[id] - b[id]);
   }
 
   updateData() {
     const { id, order } = this.sorted;
-    const { element, config } = this.headerElementsMap[ id ];
+    const { element, config } = this.headerElementsMap[id];
 
     const sortTypeFnMap = {
       'string': this.getStringSortFn(),
@@ -96,7 +96,7 @@ export default class SortableTable {
 
     element.dataset.order = order;
 
-    this.data = this.data.sort(sortTypeFnMap[ config.sortType ]);
+    this.data = this.data.sort(sortTypeFnMap[config.sortType]);
     this.subElements.body.innerHTML = this.getBodyContent();
   }
 
@@ -105,7 +105,7 @@ export default class SortableTable {
       const elementId = element.dataset.id;
       const config = this.headersConfig.find((headersItem) => elementId === headersItem.id);
 
-      return [ elementId, { element, config } ];
+      return [elementId, { element, config }];
     });
 
     return Object.fromEntries(entries);
@@ -121,8 +121,8 @@ export default class SortableTable {
 
   getElementsMap(target, dataset) {
     const entries = Array.from(
-        target.querySelectorAll(`[data-${dataset}]`),
-        (element) => [ element.dataset[ dataset ], element ],
+      target.querySelectorAll(`[data-${dataset}]`),
+      (element) => [element.dataset[dataset], element],
     );
 
     return Object.fromEntries(entries);
@@ -180,7 +180,7 @@ export default class SortableTable {
   }
 
   getBodyRowTemplate(rowData) {
-    const cellList = this.headersConfig.map(({ id, template = this.getBodyCellTemplate }) => template(rowData[ id ]));
+    const cellList = this.headersConfig.map(({ id, template = this.getBodyCellTemplate }) => template(rowData[id]));
 
     return `
       <a href="/products/${rowData.id}" class="sortable-table__row">

@@ -35,7 +35,7 @@ export default class ColumnChart {
   }
 
   initListeners() {
-    this.element.addEventListener('data:change', this.onDataChange.bind(this));
+    this.element.addEventListener('data:change', this.onDataChange);
   }
 
   async update(from, to) {
@@ -74,7 +74,7 @@ export default class ColumnChart {
         .forEach((element) => this.subElements[element.dataset.element] = element);
   }
 
-  onDataChange(event) {
+  onDataChange = (event) => {
     if (!event.detail) {
       return;
     }

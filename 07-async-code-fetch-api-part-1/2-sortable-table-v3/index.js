@@ -85,7 +85,7 @@ export default class SortableTable {
   }
 
   destroy() {
-    window.removeEventListener('scroll', this.onScroll.bind(this));
+    window.removeEventListener('scroll', this.onScroll);
 
     if (this.element) {
       this.element.remove();
@@ -117,7 +117,7 @@ export default class SortableTable {
     await this.update(id, order);
   }
 
-  onSortClick(event) {
+  onSortClick = (event) => {
     const sortableElement = event.target.closest('[data-sortable="true"]');
 
     if (!sortableElement) {
@@ -143,7 +143,7 @@ export default class SortableTable {
     }
   }
 
-  onScroll() {
+  onScroll = () => {
     const { bottom } = this.element.getBoundingClientRect();
 
     if (bottom >= window.innerHeight || this.isLoading || this.isLoadedAll) {
@@ -154,8 +154,8 @@ export default class SortableTable {
   }
 
   initListeners() {
-    this.subElements.header.addEventListener('pointerdown', this.onSortClick.bind(this));
-    window.addEventListener('scroll', this.onScroll.bind(this));
+    this.subElements.header.addEventListener('pointerdown', this.onSortClick);
+    window.addEventListener('scroll', this.onScroll);
   }
 
   getStringSortFn() {

@@ -23,11 +23,11 @@ class Tooltip {
   }
 
   initListeners() {
-    document.addEventListener('pointerover', this.onPointerOver.bind(this));
-    document.addEventListener('mousemove', this.onMouseMove.bind(this));
+    document.addEventListener('pointerover', this.onPointerOver);
+    document.addEventListener('mousemove', this.onMouseMove);
   }
 
-  onPointerOver(event) {
+  onPointerOver = (event) => {
     const tooltip = event.target.closest('[data-tooltip]');
 
     if (!tooltip) {
@@ -49,7 +49,7 @@ class Tooltip {
     }
   }
 
-  onMouseMove(event) {
+  onMouseMove = (event) => {
     if (!this.element || !this.isTooltipShown) {
       return;
     }
@@ -69,8 +69,8 @@ class Tooltip {
   }
 
   destroy() {
-    document.removeEventListener('pointerover', this.onPointerOver.bind(this));
-    document.removeEventListener('mousemove', this.onMouseMove.bind(this));
+    document.removeEventListener('pointerover', this.onPointerOver);
+    document.removeEventListener('mousemove', this.onMouseMove);
 
     this.element = null;
     this.isTooltipShown = false;
